@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class Login implements ActionListener{
+public class Login implements ActionListener {
 	private JFrame f;
 	private RoundedButton bLogin;
 	private RoundedButton2 bJoin;
@@ -25,9 +24,11 @@ public class Login implements ActionListener{
 	private BufferedImage img;
 	private HintTextField tfId, tfPwd;
 	private JTextField tfMsg;
+	
 
 	public Login() {
 		dao = new MemberDAO();
+		
 		f = new JFrame("Login");
 		f.getContentPane().setBackground(Color.white);
 		f.setSize(500, 730);
@@ -58,7 +59,6 @@ public class Login implements ActionListener{
 		tfMsg = new JTextField();
 		tfMsg.setBounds(100, 500, 300, 40);
 		tfMsg.setBorder(BorderFactory.createEmptyBorder()); // 투명하게
-//		tfMsg.setText("아이디나 비밀번호를 확인해주세요.");
 		tfMsg.setForeground(Color.red);
 		tfMsg.setHorizontalAlignment(JTextField.CENTER);
 		tfMsg.setFocusable(false);
@@ -92,34 +92,37 @@ public class Login implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(tfId.getText());
-		System.out.println(tfPwd.getText());
+		String op = e.getActionCommand();
+		if (op.equals("로그인")) {
 
-		String strId = tfId.getText();
+			System.out.println(tfId.getText());
+			System.out.println(tfPwd.getText());
 
-		ArrayList<MemberVo> list = dao.list(strId);
+			String strId = tfId.getText();
 
-		if (list.size() == 1) {
-			MemberVo data = (MemberVo) list.get(0);
-			String id = data.getId();
-			String pwd = data.getPassword();
+			ArrayList<MemberVo> list = dao.list(strId);
 
-			System.out.println("DB ==> " + id + " : " + pwd);
+			if (list.size() == 1) {
+				MemberVo data = (MemberVo) list.get(0);
+				String id = data.getId();
+				String pwd = data.getPassword();
 
-			if (tfPwd.getText().equals(pwd)) {
+				System.out.println("DB ==> " + id + " : " + pwd);
+
+				if (tfPwd.getText().equals(pwd)) {
 //				f2.setVisible(true);
-				f.dispose();
+					f.dispose();
+				} else {
+					tfMsg.setText("아이디나 비밀번호를 확인해주세요.");
+				}
 			} else {
 				tfMsg.setText("아이디나 비밀번호를 확인해주세요.");
 			}
-		} else {
-			tfMsg.setText("아이디나 비밀번호를 확인해주세요.");
 		}
-	}
+		
+		if (op.equals("회원가입")) {
+			 new Join();
+		}
 
-	public void windowClosing(WindowEvent e) {
-		f.dispose();
-//		f2.dispose();
 	}
-
 }
