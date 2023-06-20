@@ -41,8 +41,9 @@ public class MemberDAO {
 				while (rs.next()) {
 					String ye = rs.getString("per_id");
 					String password = rs.getString("per_password");
-
-					MemberVo data = new MemberVo(ye, password);
+					String tel = rs.getString("per_tel");
+					String name = rs.getString("nickname");
+					MemberVo data = new MemberVo(ye, password, tel, name);
 					list.add(data);
 				}
 			}

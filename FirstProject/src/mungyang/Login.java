@@ -24,11 +24,15 @@ public class Login implements ActionListener {
 	private BufferedImage img;
 	private HintTextField tfId, tfPwd;
 	private JTextField tfMsg;
-	
+	private String id, pwd, tel, name;
+
+	public String loginName() {
+		return name;
+	}
 
 	public Login() {
 		dao = new MemberDAO();
-		
+
 		f = new JFrame("Login");
 		f.getContentPane().setBackground(Color.white);
 		f.setSize(500, 730);
@@ -104,14 +108,16 @@ public class Login implements ActionListener {
 
 			if (list.size() == 1) {
 				MemberVo data = (MemberVo) list.get(0);
-				String id = data.getId();
-				String pwd = data.getPassword();
-
-				System.out.println("DB ==> " + id + " : " + pwd);
+				id = data.getId();
+				pwd = data.getPassword();
+				tel = data.getTel();
+				name = data.getName();
+				System.out.println("DB ==> " + id + " : " + pwd + " : " + tel + " : " + name);
 
 				if (tfPwd.getText().equals(pwd)) {
 //				f2.setVisible(true);
 					f.dispose();
+					new MainHopm();
 				} else {
 					tfMsg.setText("아이디나 비밀번호를 확인해주세요.");
 				}
@@ -119,10 +125,11 @@ public class Login implements ActionListener {
 				tfMsg.setText("아이디나 비밀번호를 확인해주세요.");
 			}
 		}
-		
+
 		if (op.equals("회원가입")) {
-			 new Join();
+			new Join();
 		}
 
 	}
+
 }

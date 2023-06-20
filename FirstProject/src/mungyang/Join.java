@@ -13,10 +13,10 @@ import javax.swing.JTextField;
 public class Join implements ActionListener {
 	private MemberDAO dao;
 	private JFrame f;
-	private JDialog info1, info2;
+	private JDialog info1, info2, info3;
 	private HintTextField tfId, tfPwd, tfTel, tfName;
-	private RoundedButton check1, check2, join, iCheck1, iCheck2;
-	private JLabel msg1, msg2;
+	private RoundedButton check1, check2, join, iCheck1, iCheck2, iCheck3;
+	private JLabel msg1, msg2, msg3;
 
 	public Join() {
 		dao = new MemberDAO();
@@ -60,7 +60,7 @@ public class Join implements ActionListener {
 		msg1 = new JLabel("중복확인 되었습니다.");
 		msg1.setBounds(80, 30, 150, 50);
 
-//		확인버튼
+//		중복확인 확인버튼
 		iCheck1 = new RoundedButton("확인");
 		iCheck1.setBounds(100, 80, 70, 50);
 		iCheck1.addActionListener(this);
@@ -68,7 +68,25 @@ public class Join implements ActionListener {
 		info1.add(msg1);
 		info1.add(iCheck1);
 
-//		회원가입 다이얼로그
+//		회원가입실패 다이얼로그
+		info3 = new JDialog(f, "Fail", true);
+		info3.setSize(300, 200);
+		info3.getContentPane().setBackground(Color.white);
+		info3.setLayout(null);
+		info3.setLocationRelativeTo(null);
+
+		msg3 = new JLabel("입력하지 않은 정보가 있는지 확인하세요.");
+		msg3.setBounds(32, 30, 235, 50);
+
+//		회원가입실패 확인버튼
+		iCheck3 = new RoundedButton("확인");
+		iCheck3.setBounds(100, 80, 70, 50);
+		iCheck3.addActionListener(this);
+
+		info3.add(msg3);
+		info3.add(iCheck3);
+
+//		회원가입성공 다이얼로그
 		info2 = new JDialog(f, "Join", true);
 		info2.setSize(300, 200);
 		info2.getContentPane().setBackground(Color.white);
@@ -78,7 +96,7 @@ public class Join implements ActionListener {
 		msg2 = new JLabel("회원가입이 완료되었습니다.");
 		msg2.setBounds(70, 30, 200, 50);
 
-//		확인버튼
+//		회원가입성공 확인버튼
 		iCheck2 = new RoundedButton("확인");
 		iCheck2.setBounds(100, 80, 70, 50);
 		iCheck2.addActionListener(this);
@@ -102,11 +120,17 @@ public class Join implements ActionListener {
 
 		String op = e.getActionCommand();
 //		아이디중복확인
+
 		if (e.getSource() == check1) {
+
 			String strId = tfId.getText();
 			ArrayList<MemberVo> list = dao.list(strId);
 
-			if (list.size() == 1) {
+			if (tfId.getText().equals("아이디") || tfId.getText().equals("")) {
+				tfId.setText("아이디를 입력하세요.");
+				tfId.setForeground(Color.red);
+				tfId.setHorizontalAlignment(JTextField.CENTER);
+			} else if (list.size() == 1) {
 				tfId.setText("중복된 아이디입니다.");
 				tfId.setForeground(Color.red);
 				tfId.setHorizontalAlignment(JTextField.CENTER);
@@ -115,12 +139,17 @@ public class Join implements ActionListener {
 				info1.setVisible(true);
 			}
 		}
+
 //		닉네임중복확인
 		if (e.getSource() == check2) {
 			String strName = tfName.getText();
 			ArrayList<MemberVo> list = dao.list2(strName);
 
-			if (list.size() == 1) {
+			if (tfName.getText().equals("닉네임") || tfName.getText().equals("")) {
+				tfName.setText("닉네임을 입력하세요.");
+				tfName.setForeground(Color.red);
+				tfName.setHorizontalAlignment(JTextField.CENTER);
+			} else if (list.size() == 1) {
 				tfName.setText("중복된 닉네임입니다.");
 				tfName.setForeground(Color.red);
 				tfName.setHorizontalAlignment(JTextField.CENTER);
@@ -140,16 +169,26 @@ public class Join implements ActionListener {
 			f.dispose();
 		}
 
+		if (e.getSource() == iCheck3) {
+			info3.dispose();
+		}
+
 		if (op.equals("회원가입")) {
-			info2.setVisible(true);
+	
 
-			String strId = tfId.getText();
-			String strPw = tfPwd.getText();
-			String strTel = tfTel.getText();
-			String strName = tfName.getText();
+			if (tfId.getText().equals("아이디") || tfId.getText().equals("") || tfPwd.getText().equals("비밀번호")
+					|| tfPwd.getText().equals("") || tfTel.getText().equals("전화번호 000-0000-0000")
+					|| tfTel.getText().equals("") || tfName.getText().equals("닉네임") || tfName.getText().equals("")) {
+				info3.setVisible(true);
+			} else {
+				info2.setVisible(true);
+				String strId = tfId.getText();
+				String strPw = tfPwd.getText();
+				String strTel = tfTel.getText();
+				String strName = tfName.getText();
 
-			ArrayList<MemberVo> insert = dao.insert(strId, strPw, strTel, strName);
-		
+				ArrayList<MemberVo> insert = dao.insert(strId, strPw, strTel, strName);
+
 				if (insert.size() == 1) {
 					MemberVo data = (MemberVo) insert.get(0);
 					String id = data.getId();
@@ -158,8 +197,9 @@ public class Join implements ActionListener {
 					String name = data.getName();
 
 					System.out.println("DB ==> " + id + " : " + pw + " : " + tel + " : " + name);
+				}
+				f.dispose();
 			}
-			f.dispose();
 		}
 	}
 }

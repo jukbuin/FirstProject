@@ -3,7 +3,8 @@ package mungyang;
 public class Main {
 
 	public static void main(String[] args) {
-		new Login();
+		Login a = new Login();
+		// dadada = new Main(a);
 	}
 
 }
