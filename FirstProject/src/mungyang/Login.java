@@ -50,7 +50,7 @@ public class Login implements ActionListener {
 		myPanel panel = new myPanel();
 		panel.setBounds(85, 50, 330, 300); // 가로, 세로
 
-//		아이디, 비밀번호버튼
+//		아이디, 비밀번호필드
 
 		tfId = new HintTextField("아이디");
 		tfId.setBounds(100, 380, 300, 40);

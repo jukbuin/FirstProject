@@ -53,15 +53,15 @@ public class MemberDAO {
 		return list;
 	}
 
-//	닉네임
-	public ArrayList<MemberVo> list2(String nickname) {
+//	전화번호조회
+	public ArrayList<MemberVo> list2(String tel) {
 		ArrayList<MemberVo> list = new ArrayList<MemberVo>();
 		try {
 			connDB();
 
 			String query = "SELECT * FROM person";
-			if (nickname != null) {
-				query += " where nickname=trim('" + nickname + "')";
+			if (tel != null) {
+				query += " where per_tel=trim('" + tel + "')";
 			}
 			System.out.println("SQL : " + query);
 			rs = stmt.executeQuery(query);
@@ -74,7 +74,7 @@ public class MemberDAO {
 				System.out.println(rs.getRow() + " rows selected.....");
 				rs.previous();
 				while (rs.next()) {
-					String name = rs.getString("nickname");
+					String name = rs.getString("per_tel");
 
 					MemberVo data = new MemberVo(name);
 					list.add(data);
