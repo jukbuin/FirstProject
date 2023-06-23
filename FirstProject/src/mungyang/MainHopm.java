@@ -7,20 +7,35 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class MainHopm implements ActionListener {
+	private MemberDAO dao;
+	private ArrayList<MemberVo> list;
 	private JFrame f;
 	private JPanel p1, pAnimals, pInfo, pLatter, pFind;
 	private RoundedButton bt1, bt2, bt3, bt4, bt5;
+	private JButton aBt, aBt2;
 	private BufferedImage img;
+	private JLabel imgLabel;
+	private ImageIcon icon, fBtimg, fBtimg2, bBtimg, bBtimg2;
+	private String a;
+	private int cnt;
 
 	public MainHopm() {
+		dao = new MemberDAO();
+
+		cnt = 1;
+
 		f = new JFrame("메인창");
 		f.setSize(1000, 800);
 		f.getContentPane().setBackground(Color.white);
@@ -57,6 +72,23 @@ public class MainHopm implements ActionListener {
 		bt5.setBounds(40, 595, 220, 50);
 		bt5.addActionListener(this);
 
+		fBtimg = new ImageIcon("C:/yeeun/first/image/bt.png");
+		fBtimg2 = new ImageIcon("C:/yeeun/first/image/bt2.png");
+		aBt = new JButton(fBtimg);
+		aBt.setRolloverIcon(fBtimg2);
+		aBt.setBorderPainted(false);
+		aBt.setBounds(610, 400, 42, 49);
+		aBt.addActionListener(this);
+		
+		bBtimg = new ImageIcon("C:/yeeun/first/image/bt3.png");
+		bBtimg2 = new ImageIcon("C:/yeeun/first/image/bt4.png");
+		
+		aBt2 = new JButton(bBtimg);
+		aBt2.setRolloverIcon(bBtimg2);
+		aBt2.setBorderPainted(false);
+		aBt2.setBounds(10, 400, 42, 49);
+		aBt2.addActionListener(this);
+
 		p1.add(bt1);
 		p1.add(bt2);
 		p1.add(bt3);
@@ -69,6 +101,21 @@ public class MainHopm implements ActionListener {
 		pAnimals.setBackground(Color.white);
 		pAnimals.setLayout(null);
 		pAnimals.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+		imgLabel = new JLabel();
+		pAnimals.add(aBt);
+		pAnimals.add(aBt2);
+		aBt2.setVisible(false);
+		
+		list = dao.animal();
+		MemberVo data = (MemberVo) list.get(0);
+		a = data.getName();
+		System.out.println(a);
+		icon = new ImageIcon(a);
+		imgLabel.setIcon(icon);
+
+		imgLabel.setBounds(110, 80, 480, 680);
+		imgLabel.setHorizontalAlignment(JLabel.CENTER);
+		pAnimals.add(imgLabel);
 		pAnimals.setVisible(false);
 
 //		이미지넣기
@@ -125,24 +172,66 @@ public class MainHopm implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String op = e.getActionCommand();
+//		보호중인 동물들
 		if (op.equals("보호중인 동물들")) {
 			pInfo.setVisible(false);
 			pLatter.setVisible(false);
 			pFind.setVisible(false);
 			pAnimals.setVisible(true);
 		}
+		if (e.getSource() == aBt) {
+			if (cnt == list.size()) {
+				cnt = 0;
+			}
 
+			if(cnt == list.size()-1) {
+				aBt.setVisible(false);
+			}
+			aBt2.setVisible(true);
+			MemberVo data = list.get(cnt);
+			data = list.get(cnt);
+			a = data.getName();
+			System.out.println(a);
+			icon = new ImageIcon(a);
+			imgLabel.setIcon(icon);
+			cnt++;
+			System.out.println(cnt);
+		}
+		
+		if(e.getSource() == aBt2) {
+			--cnt;
+			if (cnt == list.size()) {
+				cnt = 0;
+			}
+
+			if(cnt == 1) {
+				aBt2.setVisible(false);
+			}
+			aBt.setVisible(true);
+			MemberVo data = list.get(--cnt);
+			data = list.get(cnt);
+			a = data.getName();
+			System.out.println(a);
+			icon = new ImageIcon(a);
+			imgLabel.setIcon(icon);
+			cnt++;
+			System.out.println(cnt);
+		}
+		
+//		입양신청안내
 		if (op.equals("입양 신청안내")) {
 			pAnimals.setVisible(false);
 			pLatter.setVisible(false);
 			pFind.setVisible(false);
 			pInfo.setVisible(true);
 		}
-		
-		if(op.equals("입양 신청서")) {
+
+//		입양신청서
+		if (op.equals("입양 신청서")) {
 			new Apply();
 		}
 
+//		입양후기
 		if (op.equals("입양후기")) {
 			pAnimals.setVisible(false);
 			pInfo.setVisible(false);
@@ -150,6 +239,7 @@ public class MainHopm implements ActionListener {
 			pLatter.setVisible(true);
 		}
 
+//		반려동물을 찾습니다!
 		if (op.equals("반려동물을 찾습니다!")) {
 			pAnimals.setVisible(false);
 			pInfo.setVisible(false);

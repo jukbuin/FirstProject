@@ -143,7 +143,7 @@ public class Join implements ActionListener {
 //		닉네임중복확인
 		if (e.getSource() == check2) {
 			String strName = tfName.getText();
-			ArrayList<MemberVo> list = dao.list2(strName);
+			ArrayList<MemberVo> list = dao.list3(strName);
 
 			if (tfName.getText().equals("닉네임") || tfName.getText().equals("")) {
 				tfName.setText("닉네임을 입력하세요.");
@@ -173,6 +173,7 @@ public class Join implements ActionListener {
 			info3.dispose();
 		}
 
+//		회원가입
 		if (op.equals("회원가입")) {
 	
 

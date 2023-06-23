@@ -31,7 +31,7 @@ public class Apply implements ActionListener {
 	private JFrame f;
 	private MemberDAO dao;
 	private HintTextField tfName, tfTel, tfDate;
-	private RoundedButton check, bt1, bt2, bt3;
+	private RoundedButton check, bt1, bt2, bt3, bt4;
 	private RoundedButton2 btDate, apply;
 	private JDialog info1, info2, info3, info4;
 	private JLabel msg1, msg2, msg3, msg4;
@@ -87,6 +87,10 @@ public class Apply implements ActionListener {
 		bt3.setBounds(110, 80, 70, 50);
 		bt3.addActionListener(this);
 
+		bt4 = new RoundedButton("확인");
+		bt4.setBounds(110, 80, 70, 50);
+		bt4.addActionListener(this);
+
 //		다이얼로그 라벨
 		msg1 = new JLabel("등록되지 않은 전화번호 입니다.");
 		msg1.setBounds(55, 30, 200, 50);
@@ -96,6 +100,9 @@ public class Apply implements ActionListener {
 
 		msg3 = new JLabel("체크리스트를 확인해주세요.");
 		msg3.setBounds(70, 30, 200, 50);
+
+		msg4 = new JLabel("입양신청이 완료되었습니다.");
+		msg4.setBounds(70, 30, 200, 50);
 
 //		다이얼로그
 		info1 = new JDialog(f, "unregistered", true);
@@ -121,6 +128,14 @@ public class Apply implements ActionListener {
 		info3.setLocationRelativeTo(null);
 		info3.add(bt3);
 		info3.add(msg3);
+
+		info4 = new JDialog(f, "apply", true);
+		info4.setSize(300, 200);
+		info4.getContentPane().setBackground(Color.white);
+		info4.setLayout(null);
+		info4.setLocationRelativeTo(null);
+		info4.add(bt4);
+		info4.add(msg4);
 
 //		이미지넣기
 		try {
@@ -174,6 +189,11 @@ public class Apply implements ActionListener {
 			info3.dispose();
 		}
 
+		if (e.getSource() == bt4) {
+			info4.dispose();
+			f.dispose();
+		}
+
 //		전화번호 등록확인
 		if (e.getSource() == check) {
 
@@ -199,10 +219,23 @@ public class Apply implements ActionListener {
 			if (!(box.isSelected())) {
 				info3.setVisible(true);
 			} else {
-				
+				info4.setVisible(true);
+				String strName = tfName.getText();
+				String strTel = tfTel.getText();
+				String strDate = tfDate.getText();
+
+				ArrayList<MemberVo> insert2 = dao.insert2(strName, strTel, strDate);
+
+				if (insert2.size() == 1) {
+					MemberVo data = (MemberVo) insert2.get(0);
+					String name = data.getName();
+					String tel = data.getTel();
+					String day = data.getDay();
+
+					System.out.println("DB ==> " + name + " : " + tel + " : " + day);
+				}
 			}
-			
-			
+
 		}
 	}
 
@@ -330,7 +363,7 @@ public class Apply implements ActionListener {
 			add(centerPane, "Center");
 
 			setSize(400, 300);
-			
+
 			setLocation(250, 200);
 
 			setVisible(true);
@@ -464,7 +497,7 @@ public class Apply implements ActionListener {
 							m = "0" + m;
 
 						if (clickCheck == 0) {
-							tfDate.setText(y + "/" + m + "/" + str);
+							tfDate.setText(y + "-" + m + "-" + str);
 //							tfDate.setEnabled(false);
 						}
 

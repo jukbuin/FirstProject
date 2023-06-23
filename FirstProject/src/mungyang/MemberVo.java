@@ -5,9 +5,14 @@ public class MemberVo {
 	private String password;
 	private String name;
 	private String tel;
+	private String day;
 
 	public MemberVo() {
 
+	}
+
+	public MemberVo(String name) {
+		this.name = name;
 	}
 
 	public MemberVo(String id, String password) {
@@ -15,10 +20,12 @@ public class MemberVo {
 		this.password = password;
 	}
 
-	public MemberVo(String name) {
+	public MemberVo(String name, String tel, String day) {
 		this.name = name;
+		this.tel = tel;
+		this.day = day;
 	}
-	
+
 	public MemberVo(String id, String password, String tel, String name) {
 		this.id = id;
 		this.password = password;
@@ -33,12 +40,16 @@ public class MemberVo {
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getTel() {
 		return tel;
+	}
+
+	public String getDay() {
+		return day;
 	}
 }
