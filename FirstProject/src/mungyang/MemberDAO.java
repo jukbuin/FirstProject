@@ -205,6 +205,58 @@ public class MemberDAO {
 		return list;
 	}
 
+//	보호중인 동물들 검색
+	public ArrayList<MemberVo> animal(String animal) {
+		ArrayList<MemberVo> search = new ArrayList<MemberVo>();
+		try {
+			connDB();
+
+			String query;
+			if (animal.equals("고양이")) {
+				query = "select * from(select * from animal WHERE a_dog = 'x' order by DBMS_RANDOM.RANDOM) where rownum < 13";
+			} else {
+				query = "select * from(select * from animal WHERE a_dog = 'o' order by DBMS_RANDOM.RANDOM) where rownum < 13";
+			}
+			System.out.println("SQL : " + query);
+			rs = stmt.executeQuery(query);
+
+			while (rs.next()) {
+				String path = rs.getString("a_path");
+
+				MemberVo data = new MemberVo(path);
+				search.add(data);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return search;
+	}
+	
+//	반려동물을 찾습니다!
+	public ArrayList<MemberVo> find() {
+		ArrayList<MemberVo> flist = new ArrayList<MemberVo>();
+		try {
+			connDB();
+
+			String query = "select * from(select * from find order by DBMS_RANDOM.RANDOM) where rownum < 5";
+			System.out.println("SQL : " + query);
+			rs = stmt.executeQuery(query);
+
+			while (rs.next()) {
+				String path = rs.getString("f_path");
+				String path2 = rs.getString("info_path");
+
+				MemberVo fdata = new MemberVo(path, path2);
+				flist.add(fdata);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return flist;
+	}
+
 	public void connDB() {
 		try {
 
