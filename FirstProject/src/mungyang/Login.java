@@ -24,11 +24,7 @@ public class Login implements ActionListener {
 	private BufferedImage img;
 	private HintTextField tfId, tfPwd;
 	private JTextField tfMsg;
-	private String id, pwd, tel, name;
-
-	public String loginName() {
-		return name;
-	}
+	protected String id, pwd, tel, name;
 
 	public Login() {
 		dao = new MemberDAO();
@@ -84,10 +80,11 @@ public class Login implements ActionListener {
 		f.add(bJoin);
 		f.setVisible(true);
 		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+		
 	}
+	
 
-//	이미지넣기
+	//	이미지넣기
 	@SuppressWarnings("serial")
 	class myPanel extends JPanel {
 		public void paint(Graphics g) {
@@ -112,12 +109,12 @@ public class Login implements ActionListener {
 				pwd = data.getPassword();
 				tel = data.getTel();
 				name = data.getName();
+				
 				System.out.println("DB ==> " + id + " : " + pwd + " : " + tel + " : " + name);
 
 				if (tfPwd.getText().equals(pwd)) {
-//				f2.setVisible(true);
+					new MainHome(name);
 					f.dispose();
-					new MainHopm();
 				} else {
 					tfMsg.setText("아이디나 비밀번호를 확인해주세요.");
 				}
@@ -131,5 +128,5 @@ public class Login implements ActionListener {
 		}
 
 	}
-
+	
 }

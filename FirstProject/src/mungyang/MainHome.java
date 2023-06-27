@@ -20,24 +20,26 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class MainHopm implements ActionListener {
+public class MainHome implements ActionListener {
 	private MemberDAO dao;
 	private ArrayList<MemberVo> list, search, flist;
-	private JFrame f;
+	private JFrame f, f2;
 	private JPanel p1, pAnimals, pInfo, pLatter, pFind;
 	private HintTextField aTf;
 	private RoundedButton bt1, bt2, bt3, bt4, bt5;
 	private RoundedButton2 aSearBt, logout;
 	private JButton aBt, aBt2;
 	private BufferedImage img;
-	private JLabel aImgLabel, fImgLabel1, fImgLabel2, fImgLabel3, fImgLabel4;
-	private ImageIcon pIcon, fBtimg, fBtimg2, bBtimg, bBtimg2, fIcon1, fIcon2, fIcon3, fIcon4;
-	private String pImg, fImg, fImg2, fImg3, fImg4;
+	private JLabel aImgLabel, fImgLabel1, fImgLabel2, fImgLabel3, fImgLabel4, infoImgLabel;
+	private ImageIcon pIcon, fBtimg, fBtimg2, bBtimg, bBtimg2, fIcon1, fIcon2, fIcon3, fIcon4, infoIcon;
+	private String pImg, fImg, fImg2, fImg3, fImg4, infoImg;
 	private int cnt;
+	private String name;
 
-	public MainHopm() {
+	public MainHome(String name) {
+		this.name = name;
+		System.out.println("MainHome.java, 44 lines : " + name);
 		dao = new MemberDAO();
-
 		cnt = 1;
 
 		f = new JFrame("메인창");
@@ -169,35 +171,68 @@ public class MainHopm implements ActionListener {
 		pFind.setBackground(Color.white);
 		pFind.setLayout(null);
 		pFind.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+
+//		반려동물을 찾습니다 info
+		f2 = new JFrame("반려동물을 찾습니다!");
+		f2.setSize(470, 740);
+		f2.setResizable(false);
+		f2.setLocationRelativeTo(null);
+		f2.setLayout(null);
+		f2.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		infoImgLabel = new JLabel();
+		infoImg = ""; // info는 password에
+		infoImgLabel.setBounds(0, 0, 460, 710);
+		infoImgLabel.setHorizontalAlignment(JLabel.CENTER);
+		f2.add(infoImgLabel);
+		f2.setVisible(false);
+
 		fImgLabel1 = new JLabel();
 		fImgLabel1.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				System.out.print("A");
+				MemberVo fdata = (MemberVo) flist.get(0);
+				fdata = flist.get(0);
+				infoImg = fdata.getPassword();
+				infoIcon = new ImageIcon(infoImg);
+				infoImgLabel.setIcon(infoIcon);
+				f2.setVisible(true);
 			}
 		});
-		;
 
 		fImgLabel2 = new JLabel();
 		fImgLabel2.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				System.out.print("B");
+				MemberVo fdata = (MemberVo) flist.get(1);
+				fdata = flist.get(1);
+				infoImg = fdata.getPassword();
+				infoIcon = new ImageIcon(infoImg);
+				infoImgLabel.setIcon(infoIcon);
+				f2.setVisible(true);
 			}
 		});
-		;
+
 		fImgLabel3 = new JLabel();
 		fImgLabel3.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				System.out.print("C");
+				MemberVo fdata = (MemberVo) flist.get(2);
+				fdata = flist.get(2);
+				infoImg = fdata.getPassword();
+				infoIcon = new ImageIcon(infoImg);
+				infoImgLabel.setIcon(infoIcon);
+				f2.setVisible(true);
 			}
 		});
-		;
+
 		fImgLabel4 = new JLabel();
 		fImgLabel4.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				System.out.print("D");
+				MemberVo fdata = (MemberVo) flist.get(3);
+				fdata = flist.get(3);
+				infoImg = fdata.getPassword();
+				infoIcon = new ImageIcon(infoImg);
+				infoImgLabel.setIcon(infoIcon);
+				f2.setVisible(true);
 			}
 		});
-		;
 
 //		첫번째 이미지
 		flist = dao.find();
