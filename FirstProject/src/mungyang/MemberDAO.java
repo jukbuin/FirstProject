@@ -91,7 +91,7 @@ public class MemberDAO {
 		ArrayList<MemberVo> list = new ArrayList<MemberVo>();
 		try {
 			connDB();
-
+			
 			String query = "SELECT * FROM person";
 			if (nickname != null) {
 				query += " where nickname=trim('" + nickname + "')";
@@ -155,7 +155,6 @@ public class MemberDAO {
 	public ArrayList<MemberVo> insert2(String name, String tel, String day) {
 		ArrayList<MemberVo> insert2 = new ArrayList<MemberVo>();
 		try {
-			connDB();
 
 			String query = "INSERT INTO APPLY VALUES ('" + name + "','" + tel + "','" + day + "')";
 			rs = stmt.executeQuery(query);
@@ -209,7 +208,6 @@ public class MemberDAO {
 	public ArrayList<MemberVo> animal(String animal) {
 		ArrayList<MemberVo> search = new ArrayList<MemberVo>();
 		try {
-			connDB();
 
 			String query;
 			if (animal.equals("고양이")) {
@@ -233,11 +231,33 @@ public class MemberDAO {
 		return search;
 	}
 	
+//	입양후기이미지
+	public ArrayList<MemberVo> review() {
+		ArrayList<MemberVo> rlist = new ArrayList<MemberVo>();
+		try {
+//			connDB();
+
+			String query = "select * from review";
+			System.out.println("SQL : " + query);
+			rs = stmt.executeQuery(query);
+
+			while (rs.next()) {
+				String path = rs.getString("r_path");
+
+				MemberVo data = new MemberVo(path);
+				rlist.add(data);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rlist;
+	}
+	
 //	반려동물을 찾습니다!
 	public ArrayList<MemberVo> find() {
 		ArrayList<MemberVo> flist = new ArrayList<MemberVo>();
 		try {
-			connDB();
 
 			String query = "select * from(select * from find order by DBMS_RANDOM.RANDOM) where rownum < 5";
 			System.out.println("SQL : " + query);

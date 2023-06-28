@@ -19,21 +19,27 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class MainHome implements ActionListener {
 	private MemberDAO dao;
-	private ArrayList<MemberVo> list, search, flist;
+	private ArrayList<MemberVo> list, search, flist, rlist;
 	private JFrame f, f2;
-	private JPanel p1, pAnimals, pInfo, pLatter, pFind;
+	private JPanel p1, pAnimals, pInfo, pReview, pFind;
 	private HintTextField aTf;
 	private RoundedButton bt1, bt2, bt3, bt4, bt5;
-	private RoundedButton2 aSearBt, logout;
-	private JButton aBt, aBt2;
+	private RoundedButton2 aSearBt, logout, reBt1, reBt2;
+	private JButton aBt, aBt2, rBt, rBt2;
 	private BufferedImage img;
-	private JLabel aImgLabel, fImgLabel1, fImgLabel2, fImgLabel3, fImgLabel4, infoImgLabel;
-	private ImageIcon pIcon, fBtimg, fBtimg2, bBtimg, bBtimg2, fIcon1, fIcon2, fIcon3, fIcon4, infoIcon;
-	private String pImg, fImg, fImg2, fImg3, fImg4, infoImg;
-	private int cnt;
+	private JLabel aImgLabel, fImgLabel1, fImgLabel2, fImgLabel3, fImgLabel4, infoImgLabel, rImgLabel;
+	private ImageIcon pIcon, fBtimg, fBtimg2, bBtimg, bBtimg2, fIcon1, fIcon2, fIcon3, fIcon4, infoIcon, rIcon;
+	private JTextField rtf;
+	private JTextArea rta;
+	private JScrollPane scrollPane;
+	private String pImg, fImg, fImg2, fImg3, fImg4, infoImg, rImg;
+	private int cnt, rcnt;
 	private String name;
 
 	public MainHome(String name) {
@@ -41,6 +47,7 @@ public class MainHome implements ActionListener {
 		System.out.println("MainHome.java, 44 lines : " + name);
 		dao = new MemberDAO();
 		cnt = 1;
+		rcnt = 1;
 
 		f = new JFrame("메인창");
 		f.setSize(1000, 800);
@@ -118,7 +125,7 @@ public class MainHome implements ActionListener {
 		aBt2 = new JButton(bBtimg);
 		aBt2.setRolloverIcon(bBtimg2);
 		aBt2.setBorderPainted(false);
-		aBt2.setBounds(10, 400, 42, 49);
+		aBt2.setBounds(20, 400, 42, 49);
 		aBt2.addActionListener(this);
 		aBt2.setVisible(false);
 
@@ -158,12 +165,64 @@ public class MainHome implements ActionListener {
 		pInfo.setVisible(true);
 
 //		입양후기
-		pLatter = new JPanel();
-		pLatter.setBounds(300, 0, 700, 800);
-		pLatter.setBackground(Color.white);
-		pLatter.setLayout(null);
-		pLatter.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
-		pLatter.setVisible(false);
+		pReview = new JPanel();
+		pReview.setBounds(300, 0, 700, 800);
+		pReview.setBackground(Color.white);
+		pReview.setLayout(null);
+		pReview.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+		pReview.setVisible(false);
+		rImgLabel = new JLabel();
+
+//		앞으로가기버튼
+		rBt = new JButton(fBtimg);
+		rBt.setRolloverIcon(fBtimg2);
+		rBt.setBorderPainted(false);
+		rBt.setBounds(590, 300, 42, 49);
+		rBt.addActionListener(this);
+
+//		뒤로가기버튼
+		rBt2 = new JButton(bBtimg);
+		rBt2.setRolloverIcon(bBtimg2);
+		rBt2.setBorderPainted(false);
+		rBt2.setBounds(20, 300, 42, 49);
+		rBt2.addActionListener(this);
+		rBt2.setVisible(false);
+
+//		댓글보기버튼, 댓글달기버튼
+		reBt1 = new RoundedButton2("댓글보기");
+		reBt1.setBounds(550, 695, 100, 40);
+		reBt1.addActionListener(this);
+		reBt2 = new RoundedButton2("댓글달기");
+		reBt2.setBounds(550, 695, 100, 40);
+		reBt2.addActionListener(this);
+		reBt2.setVisible(false);
+
+//		댓글창
+		rtf = new JTextField();
+		rtf.setBounds(25, 695, 510, 40);
+		rta = new JTextArea();
+		rta.setFocusable(false);
+		scrollPane = new JScrollPane(rta);
+		scrollPane.setBounds(25, 600, 620, 80);
+		rtf.setVisible(false);
+		scrollPane.setVisible(false);
+
+//		이미지불러오기
+		rlist = dao.review();
+		MemberVo rdata = (MemberVo) rlist.get(0);
+		rImg = rdata.getName();
+		rIcon = new ImageIcon(rImg);
+		rImgLabel.setIcon(rIcon);
+		rImgLabel.add(rBt);
+		rImgLabel.add(rBt2);
+		rImgLabel.setBounds(25, 50, 640, 540);
+		rImgLabel.setHorizontalAlignment(JLabel.CENTER);
+
+		pReview.add(rImgLabel);
+		pReview.add(reBt1);
+		pReview.add(reBt2);
+		pReview.add(rtf);
+		pReview.add(scrollPane);
 
 //		반려동물을 찾습니다!
 		pFind = new JPanel();
@@ -276,7 +335,7 @@ public class MainHome implements ActionListener {
 		f.add(p1);
 		f.add(pAnimals);
 		f.add(pInfo);
-		f.add(pLatter);
+		f.add(pReview);
 		f.add(pFind);
 		f.setVisible(true);
 
@@ -301,7 +360,7 @@ public class MainHome implements ActionListener {
 //		보호중인 동물들
 		if (op.equals("보호중인 동물들")) {
 			pInfo.setVisible(false);
-			pLatter.setVisible(false);
+			pReview.setVisible(false);
 			pFind.setVisible(false);
 			pAnimals.setVisible(true);
 		}
@@ -378,7 +437,7 @@ public class MainHome implements ActionListener {
 //		입양신청안내
 		if (op.equals("입양 신청안내")) {
 			pAnimals.setVisible(false);
-			pLatter.setVisible(false);
+			pReview.setVisible(false);
 			pFind.setVisible(false);
 			pInfo.setVisible(true);
 		}
@@ -393,14 +452,49 @@ public class MainHome implements ActionListener {
 			pAnimals.setVisible(false);
 			pInfo.setVisible(false);
 			pFind.setVisible(false);
-			pLatter.setVisible(true);
+			pReview.setVisible(true);
+		}
+
+		if (op.equals("댓글보기")) {
+			reBt1.setVisible(false);
+			reBt2.setVisible(true);
+			rtf.setVisible(true);
+			scrollPane.setVisible(true);
+		}
+
+		if (e.getSource() == rBt) {
+			if (rcnt == rlist.size() - 1) {
+				rBt.setVisible(false);
+			}
+			rBt2.setVisible(true);
+			MemberVo data = rlist.get(rcnt);
+			rImg = data.getName();
+			rIcon = new ImageIcon(rImg);
+			rImgLabel.setIcon(rIcon);
+			rcnt++;
+			System.out.println(rcnt);
+		}
+
+		if (e.getSource() == rBt2) {
+			--rcnt;
+			if (rcnt == 1) {
+				rBt2.setVisible(false);
+			}
+			rBt.setVisible(true);
+			MemberVo data = rlist.get(--rcnt);
+			rImg = data.getName();
+			rIcon = new ImageIcon(rImg);
+			rImgLabel.setIcon(rIcon);
+			rcnt++;
+			System.out.println(rcnt);
+
 		}
 
 //		반려동물을 찾습니다!
 		if (op.equals("반려동물을 찾습니다!")) {
 			pAnimals.setVisible(false);
 			pInfo.setVisible(false);
-			pLatter.setVisible(false);
+			pReview.setVisible(false);
 			pFind.setVisible(true);
 		}
 

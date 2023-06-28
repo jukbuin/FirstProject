@@ -24,7 +24,7 @@ public class Login implements ActionListener {
 	private BufferedImage img;
 	private HintTextField tfId, tfPwd;
 	private JTextField tfMsg;
-	protected String id, pwd, tel, name;
+	private String id, pwd, tel, name;
 
 	public Login() {
 		dao = new MemberDAO();

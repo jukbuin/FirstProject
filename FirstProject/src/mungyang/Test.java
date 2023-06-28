@@ -30,33 +30,40 @@ class TextAreaEx extends JFrame {
 
 		MyCenterPanel() {
 			dao = new MemberDAO();
-			
-			
-//			count변수를 두고 get(cnt) 버튼 클릭할때마다 count증가
-//			댓글달기는 지금 로그인되어있는사람 닉네임가져와서 달아주기
-			ArrayList<MemberVo> list = dao.animal();
-			MemberVo data = (MemberVo) list.get(0);
-			MemberVo data2 = (MemberVo) list.get(1);
-			String a = data.getName();
-			String b = data2.getName();
-			String c = "";
+			MemberVo data;
+			String a;
+
+//			String c = "";
 			
 			tf = new JTextField(20);
 			btn = new JButton("추가");
-			System.out.println(c);
+//			System.out.println(c);
 
 			btn.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					ta.append("\n" + tf.getText() + " " + c);
+					ta.append("\n" + tf.getText());
 				}
 			});
 			ta = new JTextArea("hello", 7, 20);
+			
+			
+
 			add(tf);
 			add(btn);
 			add(new JScrollPane(ta));
-			ta.setText(a + "\n" + b);
+//			ta.setText(a + "\n" + b);
 			ta.setFocusable(false);
+			
+//			count변수를 두고 get(cnt) 버튼 클릭할때마다 count증가
+//			댓글달기는 지금 로그인되어있는사람 닉네임가져와서 달아주기
+			ArrayList<MemberVo> list = dao.animal();
+			System.out.println(list.size());
+			for(int i = 0; i < list.size(); i ++) {
+				data = (MemberVo) list.get(i);
+				a = data.getName();
+				ta.append("\n" + a);
+			}
 		}
 	}
 }
