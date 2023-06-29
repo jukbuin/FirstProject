@@ -25,7 +25,7 @@ import javax.swing.JTextField;
 
 public class MainHome implements ActionListener {
 	private MemberDAO dao;
-	private ArrayList<MemberVo> list, search, flist, rlist;
+	private ArrayList<MemberVo> list, search, flist, rlist, clist, cinsert;
 	private JFrame f, f2;
 	private JPanel p1, pAnimals, pInfo, pReview, pFind;
 	private HintTextField aTf;
@@ -40,7 +40,8 @@ public class MainHome implements ActionListener {
 	private JScrollPane scrollPane;
 	private String pImg, fImg, fImg2, fImg3, fImg4, infoImg, rImg;
 	private int cnt, rcnt;
-	private String name;
+	private String name, comments, nickname;
+	private MemberVo cdata;
 
 	public MainHome(String name) {
 		this.name = name;
@@ -206,6 +207,13 @@ public class MainHome implements ActionListener {
 		scrollPane.setBounds(25, 600, 620, 80);
 		rtf.setVisible(false);
 		scrollPane.setVisible(false);
+		clist = dao.comments(rcnt);
+		for (int i = 0; i < clist.size(); i++) {
+			cdata = (MemberVo) clist.get(i);
+			comments = cdata.getId();
+			nickname = cdata.getPassword();
+			rta.append(nickname + " - " + comments + "\n");
+		}
 
 //		이미지불러오기
 		rlist = dao.review();
@@ -455,11 +463,19 @@ public class MainHome implements ActionListener {
 			pReview.setVisible(true);
 		}
 
+//		댓글보기
 		if (op.equals("댓글보기")) {
 			reBt1.setVisible(false);
 			reBt2.setVisible(true);
 			rtf.setVisible(true);
 			scrollPane.setVisible(true);
+		}
+
+//		댓글달기
+		if (op.equals("댓글달기")) {
+			rta.append(name + " - " + rtf.getText());
+			cinsert = dao.insert3(rcnt, rtf.getText(), name);
+			rtf.setText("");
 		}
 
 		if (e.getSource() == rBt) {
@@ -472,6 +488,14 @@ public class MainHome implements ActionListener {
 			rIcon = new ImageIcon(rImg);
 			rImgLabel.setIcon(rIcon);
 			rcnt++;
+			clist = dao.comments(rcnt);
+			rta.setText("");
+			for (int i = 0; i < clist.size(); i++) {
+				cdata = (MemberVo) clist.get(i);
+				comments = cdata.getId();
+				nickname = cdata.getPassword();
+				rta.append(nickname + " - " + comments + "\n");
+			}
 			System.out.println(rcnt);
 		}
 
@@ -486,6 +510,14 @@ public class MainHome implements ActionListener {
 			rIcon = new ImageIcon(rImg);
 			rImgLabel.setIcon(rIcon);
 			rcnt++;
+			clist = dao.comments(rcnt);
+			rta.setText("");
+			for (int i = 0; i < clist.size(); i++) {
+				cdata = (MemberVo) clist.get(i);
+				comments = cdata.getId();
+				nickname = cdata.getPassword();
+				rta.append(nickname + " - " + comments + "\n");
+			}
 			System.out.println(rcnt);
 
 		}

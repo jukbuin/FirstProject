@@ -235,7 +235,6 @@ public class MemberDAO {
 	public ArrayList<MemberVo> review() {
 		ArrayList<MemberVo> rlist = new ArrayList<MemberVo>();
 		try {
-//			connDB();
 
 			String query = "select * from review";
 			System.out.println("SQL : " + query);
@@ -252,6 +251,59 @@ public class MemberDAO {
 			e.printStackTrace();
 		}
 		return rlist;
+	}
+	
+//	입양후기 댓글창
+	public ArrayList<MemberVo> comments(int rcnt) {
+		ArrayList<MemberVo> clist = new ArrayList<MemberVo>();
+		try {
+
+			String query = "select * from comments where r_number = " + rcnt;
+			System.out.println("SQL : " + query);
+			rs = stmt.executeQuery(query);
+
+			while (rs.next()) {
+				String ye = rs.getString("content");
+				String ye2 = rs.getString("nickname");
+
+				MemberVo data = new MemberVo(ye, ye2);
+				clist.add(data);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return clist;
+	}
+	
+//	입양후기 댓글달기
+	public ArrayList<MemberVo> insert3(int rcnt, String content, String name) {
+		ArrayList<MemberVo> insert3 = new ArrayList<MemberVo>();
+		try {
+
+			String query = "INSERT INTO comments VALUES (" + rcnt + ",'" + content + "','" + name + "')";
+			rs = stmt.executeQuery(query);
+			
+			String sql2 = "SELECT * FROM comments";
+			rs = stmt.executeQuery(sql2);
+			if (content != null) {
+				sql2 += " where content=trim('" + content + "')";
+			}
+			rs = stmt.executeQuery(sql2);
+
+			while (rs.next()) {
+				String ye = rs.getString("r_number");
+				String ye2 = rs.getString("content");
+				String ye3 = rs.getString("nickname");
+
+				MemberVo data = new MemberVo(ye, ye2, ye3);
+				insert3.add(data);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return insert3;
 	}
 	
 //	반려동물을 찾습니다!

@@ -175,7 +175,6 @@ public class Join implements ActionListener {
 
 //		회원가입
 		if (op.equals("회원가입")) {
-	
 
 			if (tfId.getText().equals("아이디") || tfId.getText().equals("") || tfPwd.getText().equals("비밀번호")
 					|| tfPwd.getText().equals("") || tfTel.getText().equals("전화번호 000-0000-0000")
