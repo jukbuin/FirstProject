@@ -1,10 +1,10 @@
 package mungyang;
 
 import java.sql.Connection;
-
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class MemberDAO {
@@ -28,15 +28,13 @@ public class MemberDAO {
 			if (id != null) {
 				query += " where per_id=trim('" + id + "')";
 			}
-			System.out.println("SQL : " + query);
 			rs = stmt.executeQuery(query);
 			rs.last();
-			System.out.println("rs.getRow() : " + rs.getRow());
 
 			if (rs.getRow() == 0) {
-				System.out.println("0 row selected.....");
+				System.out.println("일치하는 항목이 없습니다. -----> " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 			} else {
-				System.out.println(rs.getRow() + " rows selected.....");
+				System.out.println(rs.getRow() + " rows selected -----> " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 				rs.previous();
 				while (rs.next()) {
 					String ye = rs.getString("per_id");
@@ -63,15 +61,13 @@ public class MemberDAO {
 			if (tel != null) {
 				query += " where per_tel=trim('" + tel + "')";
 			}
-			System.out.println("SQL : " + query);
 			rs = stmt.executeQuery(query);
 			rs.last();
-			System.out.println("rs.getRow() : " + rs.getRow());
 
 			if (rs.getRow() == 0) {
-				System.out.println("0 row selected.....");
+				System.out.println("일치하는 항목이 없습니다. -----> " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 			} else {
-				System.out.println(rs.getRow() + " rows selected.....");
+				System.out.println(rs.getRow() + " rows selected -----> " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 				rs.previous();
 				while (rs.next()) {
 					String name = rs.getString("per_tel");
@@ -91,24 +87,21 @@ public class MemberDAO {
 		ArrayList<MemberVo> list = new ArrayList<MemberVo>();
 		try {
 			connDB();
-			
+
 			String query = "SELECT * FROM person";
 			if (nickname != null) {
 				query += " where nickname=trim('" + nickname + "')";
 			}
-			System.out.println("SQL : " + query);
 			rs = stmt.executeQuery(query);
 			rs.last();
-			System.out.println("rs.getRow() : " + rs.getRow());
 
 			if (rs.getRow() == 0) {
-				System.out.println("0 row selected.....");
+				System.out.println("일치하는 항목이 없습니다. -----> " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 			} else {
-				System.out.println(rs.getRow() + " rows selected.....");
+				System.out.println(rs.getRow() + " rows selected -----> " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 				rs.previous();
 				while (rs.next()) {
 					String name = rs.getString("nickname");
-
 					MemberVo data = new MemberVo(name);
 					list.add(data);
 				}
@@ -188,7 +181,6 @@ public class MemberDAO {
 			connDB();
 
 			String query = "select * from(select * from animal order by DBMS_RANDOM.RANDOM) where rownum < 13";
-			System.out.println("SQL : " + query);
 			rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
@@ -215,7 +207,6 @@ public class MemberDAO {
 			} else {
 				query = "select * from(select * from animal WHERE a_dog = 'o' order by DBMS_RANDOM.RANDOM) where rownum < 13";
 			}
-			System.out.println("SQL : " + query);
 			rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
@@ -230,14 +221,13 @@ public class MemberDAO {
 		}
 		return search;
 	}
-	
+
 //	입양후기이미지
 	public ArrayList<MemberVo> review() {
 		ArrayList<MemberVo> rlist = new ArrayList<MemberVo>();
 		try {
 
 			String query = "select * from review";
-			System.out.println("SQL : " + query);
 			rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
@@ -252,14 +242,13 @@ public class MemberDAO {
 		}
 		return rlist;
 	}
-	
+
 //	입양후기 댓글창
 	public ArrayList<MemberVo> comments(int rcnt) {
 		ArrayList<MemberVo> clist = new ArrayList<MemberVo>();
 		try {
 
 			String query = "select * from comments where r_number = " + rcnt;
-			System.out.println("SQL : " + query);
 			rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
@@ -275,7 +264,7 @@ public class MemberDAO {
 		}
 		return clist;
 	}
-	
+
 //	입양후기 댓글달기
 	public ArrayList<MemberVo> insert3(int rcnt, String content, String name) {
 		ArrayList<MemberVo> insert3 = new ArrayList<MemberVo>();
@@ -283,7 +272,7 @@ public class MemberDAO {
 
 			String query = "INSERT INTO comments VALUES (" + rcnt + ",'" + content + "','" + name + "')";
 			rs = stmt.executeQuery(query);
-			
+
 			String sql2 = "SELECT * FROM comments";
 			rs = stmt.executeQuery(sql2);
 			if (content != null) {
@@ -305,14 +294,13 @@ public class MemberDAO {
 		}
 		return insert3;
 	}
-	
+
 //	반려동물을 찾습니다!
 	public ArrayList<MemberVo> find() {
 		ArrayList<MemberVo> flist = new ArrayList<MemberVo>();
 		try {
 
 			String query = "select * from(select * from find order by DBMS_RANDOM.RANDOM) where rownum < 5";
-			System.out.println("SQL : " + query);
 			rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
@@ -333,11 +321,9 @@ public class MemberDAO {
 		try {
 
 			Class.forName(driver);
-			System.out.println("jdbc driver loading success.");
 			con = DriverManager.getConnection(url, user, password);
-			System.out.println("oracle connection success.");
 			stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			System.out.println("statement create success.");
+//			System.out.println("데이터베이스 연결 성공 -----> " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -3,6 +3,7 @@ package mungyang;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.JDialog;
@@ -75,8 +76,8 @@ public class Join implements ActionListener {
 		info3.setLayout(null);
 		info3.setLocationRelativeTo(null);
 
-		msg3 = new JLabel("입력하지 않은 정보가 있는지 확인하세요.");
-		msg3.setBounds(32, 30, 235, 50);
+		msg3 = new JLabel("입력정보를 확인해주세요.");
+		msg3.setBounds(75, 30, 235, 50);
 
 //		회원가입실패 확인버튼
 		iCheck3 = new RoundedButton("확인");
@@ -175,10 +176,13 @@ public class Join implements ActionListener {
 
 //		회원가입
 		if (op.equals("회원가입")) {
-
+			
+//			if (tfTel.getText().length() >  13) {
+//				tfTel.setText("전화번호를 확인해주세요.");
+//			}
 			if (tfId.getText().equals("아이디") || tfId.getText().equals("") || tfPwd.getText().equals("비밀번호")
 					|| tfPwd.getText().equals("") || tfTel.getText().equals("전화번호 000-0000-0000")
-					|| tfTel.getText().equals("") || tfName.getText().equals("닉네임") || tfName.getText().equals("")) {
+					|| tfTel.getText().equals("") || tfName.getText().equals("닉네임") || tfName.getText().equals("") || tfTel.getText().length() >  13) {
 				info3.setVisible(true);
 			} else {
 				info2.setVisible(true);
@@ -197,6 +201,7 @@ public class Join implements ActionListener {
 					String name = data.getName();
 
 					System.out.println("DB ==> " + id + " : " + pw + " : " + tel + " : " + name);
+					System.out.println("회원가입성공 -----> " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 				}
 				f.dispose();
 			}

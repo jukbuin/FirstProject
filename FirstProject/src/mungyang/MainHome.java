@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -45,7 +46,7 @@ public class MainHome implements ActionListener {
 
 	public MainHome(String name) {
 		this.name = name;
-		System.out.println("MainHome.java, 44 lines : " + name);
+		System.out.println("로그인한 회원의 닉네임 : " + name + " -----> " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 		dao = new MemberDAO();
 		cnt = 1;
 		rcnt = 1;
@@ -363,6 +364,7 @@ public class MainHome implements ActionListener {
 		if (op.equals("로그아웃")) {
 			f.dispose();
 			new Login();
+			System.out.println("로그아웃 -----> " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 		}
 
 //		보호중인 동물들
@@ -476,6 +478,7 @@ public class MainHome implements ActionListener {
 			rta.append(name + " - " + rtf.getText());
 			cinsert = dao.insert3(rcnt, rtf.getText(), name);
 			rtf.setText("");
+			System.out.println("댓글달기 성공 -----> " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 		}
 
 		if (e.getSource() == rBt) {
@@ -496,7 +499,7 @@ public class MainHome implements ActionListener {
 				nickname = cdata.getPassword();
 				rta.append(nickname + " - " + comments + "\n");
 			}
-			System.out.println(rcnt);
+//			System.out.println(rcnt);
 		}
 
 		if (e.getSource() == rBt2) {
@@ -518,7 +521,7 @@ public class MainHome implements ActionListener {
 				nickname = cdata.getPassword();
 				rta.append(nickname + " - " + comments + "\n");
 			}
-			System.out.println(rcnt);
+//			System.out.println(rcnt);
 
 		}
 

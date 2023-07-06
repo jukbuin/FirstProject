@@ -96,9 +96,6 @@ public class Login implements ActionListener {
 		String op = e.getActionCommand();
 		if (op.equals("로그인")) {
 
-			System.out.println(tfId.getText());
-			System.out.println(tfPwd.getText());
-
 			String strId = tfId.getText();
 
 			ArrayList<MemberVo> list = dao.list(strId);

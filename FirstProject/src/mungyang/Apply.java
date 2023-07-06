@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -226,13 +227,14 @@ public class Apply implements ActionListener {
 
 				ArrayList<MemberVo> insert2 = dao.insert2(strName, strTel, strDate);
 
-				if (insert2.size() == 1) {
+				if (insert2.size() != 0) {
 					MemberVo data = (MemberVo) insert2.get(0);
 					String name = data.getName();
 					String tel = data.getTel();
 					String day = data.getDay();
 
 					System.out.println("DB ==> " + name + " : " + tel + " : " + day);
+					System.out.println("입양 신청 성공 -----> " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 				}
 			}
 
